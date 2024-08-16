@@ -1,20 +1,22 @@
 <script setup>
+import { computed } from 'vue';
 import { AppState } from './AppState'
 import Navbar from './components/Navbar.vue'
+import RecipeForm from './components/RecipeForm.vue';
 
-
+const account = computed(() => AppState.account)
 </script>
 
 <template>
   <header>
-    <Navbar />
+    <!-- <Navbar /> -->
   </header>
   <main>
     <router-view />
   </main>
-  <footer class="bg-dark text-light">
-    Made with 💖 by CodeWorks
-  </footer>
+  <ModalWrapper modalId="newRecipeForm" modalName="Create Recipe" modalSize="lg">
+    <RecipeForm :account="account" />
+  </ModalWrapper>
 </template>
 
 <style lang="scss">

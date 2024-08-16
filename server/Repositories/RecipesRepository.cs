@@ -3,7 +3,6 @@
 
 
 namespace allspice.Repositories;
-
 public class RecipesRepository
 {
     private readonly IDbConnection _db;
@@ -13,7 +12,7 @@ public class RecipesRepository
         _db = db;
     }
 
-    internal Recipe CreateRepository(Recipe recipeData)
+    internal Recipe CreateRecipe(Recipe recipeData)
     {
         string sql = @"
         INSERT INTO 
