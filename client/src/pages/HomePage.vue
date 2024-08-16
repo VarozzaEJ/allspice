@@ -55,7 +55,7 @@ async function getAllRecipes() {
     <div class="container-fluid">
       <div class="row">
 
-        <div v-for="recipe in recipes" :key="recipe.id" class="col-md-4 mt-3">
+        <div v-for="recipe in recipes" :key="recipe.id" class="col-xl-4 col-md-6 mt-3">
           <RecipeCard :recipeProp='recipe' />
         </div>
       </div>

@@ -1,6 +1,7 @@
 <script setup>
 import { Recipe } from '@/models/Recipe.js';
 import { recipesService } from '@/services/RecipesService.js';
+import { logger } from '@/utils/Logger.js';
 import Pop from '@/utils/Pop.js';
 import { onMounted } from 'vue';
 
@@ -11,9 +12,20 @@ const props = defineProps({ recipeProp: { type: Recipe, required: true } })
 async function setActiveRecipe() {
     try {
         recipesService.setActiveRecipe(props.recipeProp)
+        getIngredientsForRecipe()
     }
     catch (error) {
         Pop.error("Could not open this recipe");
+    }
+}
+
+async function getIngredientsForRecipe() {
+    try {
+        await recipesService.getIngredientsForRecipe(props.recipeProp.id)
+    }
+    catch (error) {
+        Pop.error("Could not get ingredients");
+        logger.error(error)
     }
 }
 </script>

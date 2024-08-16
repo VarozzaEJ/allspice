@@ -2,11 +2,21 @@ import { logger } from "@/utils/Logger.js"
 import { api } from "./AxiosService.js"
 import { Recipe } from "@/models/Recipe.js"
 import { AppState } from "@/AppState.js"
+import { Ingredient } from "@/models/Ingredient.js"
 
 
 class RecipesService {
+    async getIngredientsForRecipe(recipeId) {
+        const response = await api.get(`api/recipes/${recipeId}/ingredients`)
+        const listOfIngredients = response.data.map(ingredientPOJO => new Ingredient(ingredientPOJO))
+        AppState.activeRecipeIngredients = listOfIngredients
+    }
     async editRecipe(recipeData, recipeId) {
         const response = await api.put(`api/recipes/${recipeId}`, recipeData)
+        debugger
+        recipeData.ingredients.recipeId = recipeId
+        const ingredientResponse = await api.post('api/ingredients', recipeData.ingredients)
+        logger.log(ingredientResponse)
         const recipeIndex = await this.getRecipeIndexById(recipeId)
         const updatedRecipe = new Recipe(response.data)
         AppState.recipes.splice(recipeIndex, 1, updatedRecipe)
@@ -28,6 +38,7 @@ class RecipesService {
         AppState.recipes.splice(recipeToDestroy, 1)
     }
     setActiveRecipe(recipeProp) {
+        AppState.activeRecipeIngredients = null
         const activeRecipe = new Recipe(recipeProp)
         activeRecipe.editMode = false
         AppState.activeRecipe = activeRecipe
