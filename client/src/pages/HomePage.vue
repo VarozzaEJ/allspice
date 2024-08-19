@@ -6,9 +6,10 @@ import RecipeModal from '@/components/RecipeModal.vue';
 import { recipesService } from '@/services/RecipesService.js';
 import Pop from '@/utils/Pop.js';
 import { computed, onMounted } from 'vue';
+import { RouterLink } from 'vue-router';
 
 
-
+const account = computed(() => AppState.account)
 const recipes = computed(() => AppState.recipes)
 
 onMounted(() => {
@@ -43,9 +44,13 @@ async function getAllRecipes() {
       </div>
       <div class="row d-flex justify-content-center">
         <div class="col-md-6 d-flex justify-content-center">
-          <button class="btn no-round me-1 shadow btn-light">Home</button>
+          <RouterLink :to="{ name: 'Home' }">
+            <button class="btn no-round me-1 shadow btn-light">Home</button>
+          </RouterLink>
           <button class="btn no-round me-1 shadow btn-light">My Recipes</button>
-          <button class="btn no-round me-1 shadow btn-light">Favorites</button>
+          <RouterLink :to="{ name: 'Favorites' }">
+            <button class="btn no-round me-1 shadow btn-light">Favorites</button>
+          </RouterLink>
         </div>
       </div>
     </div>
