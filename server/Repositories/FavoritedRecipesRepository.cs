@@ -39,6 +39,7 @@ public class FavoritedRecipesRepository
             recipe.RecipeId = favorite.RecipeId;
             recipe.FavoriteId = favorite.Id;
             recipe.Creator = profile;
+            recipe.IsFavorited = true;
             return recipe;
         }, favoriteData).FirstOrDefault();
         return recipe;
@@ -54,10 +55,10 @@ public class FavoritedRecipesRepository
 
         FROM favoritedRecipes
         JOIN recipes ON recipes.id = favoritedRecipes.recipeId
-        JOIN accounts on accounts.id = recipes.creatorId
+        JOIN accounts ON accounts.id = recipes.creatorId
         WHERE favoritedRecipes.accountId = @userId
         ;";
-
+        //JOIN accounts on accounts.id = recipes.creatorId may be wrong. Might be assigning your account as the creator of a recipe even if it isn't true.
         List<UserFavoritedRecipe> recipes = _db.Query<FavoritedRecipe, UserFavoritedRecipe, Profile, UserFavoritedRecipe>(sql, (favorite, recipe, profile) => {
             recipe.Creator = profile;
             recipe.AccountId = favorite.AccountId;

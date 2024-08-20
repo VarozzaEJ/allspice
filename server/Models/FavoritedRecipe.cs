@@ -12,4 +12,6 @@ public class UserFavoritedRecipe : Recipe
     public string AccountId { get; set; }
 
     public int FavoriteId { get; set; }
+
+    public bool IsFavorited { get; set; }
 }

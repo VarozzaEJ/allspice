@@ -23,10 +23,7 @@ onMounted(() => {
 
 
 const editableRecipeData = ref({
-    title: '',
-    category: '',
     instructions: '',
-
 })
 
 const editableIngredientData = ref({
@@ -97,16 +94,16 @@ async function deleteIngredient(ingredientId) {
 
 
 <template>
-    <div v-if="activeRecipe" class="modal" id="recipeModal" tabindex="-1">
+    <div class="modal" id="recipeModal" tabindex="-1">
         <div class="modal-dialog modal-xl ">
-            <div class="modal-content">
+            <div v-if="activeRecipe" class="modal-content">
                 <div v-if="activeRecipe.editMode == false" class="container-fluid h-100">
                     <div class="row h-100">
                         <div class="col-md-6 px-0 h-100 ">
-                            <img class="img-fluid " :src="activeRecipe.img" :alt="`${activeRecipe.title}'s image'`"
+                            <img class="" :src="activeRecipe.img" :alt="`${activeRecipe.title}'s image'`"
                                 :title="`${activeRecipe.title}'s image'`">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 bg-light">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="d-flex">
@@ -316,5 +313,10 @@ img {
     border-bottom-left-radius: 1%;
     border-top-right-radius: 1%;
     border-bottom-right-radius: 1%;
+    max-height: 100%;
+    height: 600px;
+    width: 412px;
+    object-fit: cover;
+    object-position: center;
 }
 </style>

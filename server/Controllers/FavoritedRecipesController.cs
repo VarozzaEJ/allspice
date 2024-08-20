@@ -20,6 +20,8 @@ public class FavoritedRecipesController : ControllerBase
     {
       try 
       {
+      favoriteData.IsFavorited = true;
+      
       Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
       favoriteData.AccountId = userInfo.Id;
       UserFavoritedRecipe favorite = _favoritedRecipesService.CreateFavorite(favoriteData);

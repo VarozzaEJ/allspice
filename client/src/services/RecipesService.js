@@ -7,16 +7,16 @@ import { Ingredient } from "@/models/Ingredient.js"
 
 class RecipesService {
     async getIngredientsForRecipe(recipeId) {
+        AppState.activeRecipeIngredients = []
         const response = await api.get(`api/recipes/${recipeId}/ingredients`)
         const listOfIngredients = response.data.map(ingredientPOJO => new Ingredient(ingredientPOJO))
         AppState.activeRecipeIngredients = listOfIngredients
     }
     async editRecipe(recipeData, recipeId) {
         const response = await api.put(`api/recipes/${recipeId}`, recipeData)
-        debugger
-        recipeData.ingredients.recipeId = recipeId
-        const ingredientResponse = await api.post('api/ingredients', recipeData.ingredients)
-        logger.log(ingredientResponse)
+        // recipeData.ingredients.recipeId = recipeId
+        // const ingredientResponse = await api.post('api/ingredients', recipeData.ingredients)
+        // logger.log(ingredientResponse)
         const recipeIndex = await this.getRecipeIndexById(recipeId)
         const updatedRecipe = new Recipe(response.data)
         AppState.recipes.splice(recipeIndex, 1, updatedRecipe)
@@ -33,12 +33,14 @@ class RecipesService {
         return foundRecipe
     }
     async deleteRecipe(recipeId) {
-        await api.get(`api/recipes/${recipeId}`)
+        await api.delete(`api/recipes/${recipeId}`)
         const recipeToDestroy = AppState.recipes.findIndex(recipe => recipe.id == recipeId)
         AppState.recipes.splice(recipeToDestroy, 1)
+        AppState.favoritedRecipes.splice(recipeToDestroy, 1)
     }
     setActiveRecipe(recipeProp) {
         AppState.activeRecipeIngredients = null
+        AppState.activeRecipe = null
         const activeRecipe = new Recipe(recipeProp)
         activeRecipe.editMode = false
         AppState.activeRecipe = activeRecipe

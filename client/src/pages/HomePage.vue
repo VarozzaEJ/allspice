@@ -34,7 +34,8 @@ async function getAllRecipes() {
         <Login />
       </div>
       <div class="row d-flex justify-content-center">
-        <div class="col-md-6 text-light text-shadow d-flex flex-column justify-content-center bg-transparent">
+        <div
+          class="col-md-6 sahitya-font text-light text-shadow d-flex flex-column justify-content-center bg-transparent">
           <p class="fs-1 fw-bold text-center mb-2"> AllSpice</p>
           <p class="fs-2 fw-bold text-center mb-2"> Cherish Your Family</p>
           <p class="fs-2 fw-bold text-center mb-2"> And Their Cooking</p>

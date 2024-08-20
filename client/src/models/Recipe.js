@@ -12,6 +12,7 @@ export class Recipe {
         this.creator = data.creator ? new Account(data.creator) : null
         this.creatorId = data.creatorId
         this.editMode = false
+        this.isFavorited = data.isFavorited || false
     }
 
     get recipeBackgroundImage() {

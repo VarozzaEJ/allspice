@@ -14,4 +14,6 @@ public class Recipe : RepoItem<int>
     public string CreatorId { get; set; }
 
     public Profile Creator {get; set;}
+
+    public bool IsFavorited { get; set; }
 }

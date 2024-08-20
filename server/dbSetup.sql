@@ -46,3 +46,7 @@ UNIQUE (recipeId, accountId)
 );
 
 DROP TABLE ingredients;
+
+DELETE FROM `favoritedRecipes`;
+
+

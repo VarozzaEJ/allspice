@@ -1,5 +1,7 @@
 <script setup>
 import { AppState } from '@/AppState.js';
+import RecipeCard from '@/components/RecipeCard.vue';
+import RecipeModal from '@/components/RecipeModal.vue';
 import { favoritedRecipesService } from '@/services/FavoritedRecipesService.js';
 import { logger } from '@/utils/Logger.js';
 import Pop from '@/utils/Pop.js';
@@ -23,7 +25,8 @@ onMounted(() => {
                 <Login />
             </div>
             <div class="row d-flex justify-content-center">
-                <div class="col-md-6 text-light text-shadow d-flex flex-column justify-content-center bg-transparent">
+                <div
+                    class="col-md-6 sahitya-font text-light text-shadow d-flex flex-column justify-content-center bg-transparent">
                     <p class="fs-1 fw-bold text-center mb-2"> AllSpice</p>
                     <p class="fs-2 fw-bold text-center mb-2"> Cherish Your Family</p>
                     <p class="fs-2 fw-bold text-center mb-2"> And Their Cooking</p>
@@ -44,13 +47,18 @@ onMounted(() => {
             </div>
         </div>
     </header>
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
+    <main class="mt-5">
+        <div class="container-fluid">
+            <div class="row">
 
+                <div v-for="recipe in favoritedRecipes" :key="recipe.id" class="col-xl-4 col-md-6 mt-3">
+                    <RecipeCard :recipeProp='recipe' />
+                </div>
             </div>
         </div>
-    </div>
+    </main>
+
+    <RecipeModal modalId="recipeModal" modalName="recipeModal" />
 </template>
 
 
