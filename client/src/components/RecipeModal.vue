@@ -251,18 +251,19 @@ async function deleteIngredient(ingredientId) {
                                                             aria-describedby="button-addon2">
                                                     </div>
                                                 </div>
-                                                <div class="col-5 ps-1">
+                                                <div class="col-5 ps-1 pe-0">
                                                     <div class="input-group mb-3 ">
                                                         <input v-model="editableIngredientData.name" type="text"
-                                                            class="form-control" placeholder="Name"
+                                                            class="form-control no-round-end" placeholder="Name"
                                                             aria-label="Ingredient Name"
                                                             aria-describedby="button-addon2">
 
                                                     </div>
                                                 </div>
 
-                                                <div class="col-1 d-flex">
-                                                    <button class="d-flex align-items-center btn btn-secondary"><i
+                                                <div class="col-3 h-50 px-0 d-flex">
+                                                    <button
+                                                        class="d-flex no-round-start align-items-center btn btn-secondary"><i
                                                             class="mdi mdi-plus"></i></button>
                                                 </div>
                                             </div>
@@ -325,5 +326,15 @@ img {
 .img-bg {
     background-position: center;
 
+}
+
+.no-round-start {
+    border-top-left-radius: 0%;
+    border-bottom-left-radius: 0%;
+}
+
+.no-round-end {
+    border-top-right-radius: 0%;
+    border-bottom-right-radius: 0%;
 }
 </style>

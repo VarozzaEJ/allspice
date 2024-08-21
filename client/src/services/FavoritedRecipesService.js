@@ -15,8 +15,6 @@ class FavoritedRecipesService {
     async favoriteRecipe(recipeData) {
         const response = await api.post("api/favorites", recipeData)
         const newRecipe = new FavoritedRecipe(response.data)
-        const foundRecipe = AppState.recipes.findIndex(recipe => recipe.id == recipeData.recipeId)
-        AppState.recipes.splice(foundRecipe, 1)
         AppState.favoritedRecipes.push(newRecipe)
     }
     async getAllFavoritedRecipes() {

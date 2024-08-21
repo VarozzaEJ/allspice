@@ -49,10 +49,10 @@ const account = computed(() => AppState.account)
             <div class="row">
                 <nav class="navbar bg-transparent">
                     <div class="container-fluid d-flex justify-content-end">
-                        <form @submit="searchCategory()" class="d-flex me-5" role="search">
-                            <input v-model="searchData.searchData" class="form-control me-2" type="search"
+                        <form @submit.prevent="searchCategory()" class="d-flex me-md-5 me-1" role="search">
+                            <input v-model="searchData.searchData" class="form-control me-0 no-round-end" type="search"
                                 placeholder="Search By Category" aria-label="Search">
-                            <button class="btn btn-success" type="submit">Search</button>
+                            <button class="btn btn-success no-round-start" type="submit">Search</button>
                         </form>
                         <button class="btn selectable text-success lighten-30 text-uppercase my-2 my-lg-0"
                             @click="login" v-if="!identity">
@@ -92,8 +92,8 @@ const account = computed(() => AppState.account)
                 <div
                     class="col-md-6 sahitya-font text-light text-shadow d-flex flex-column justify-content-center bg-transparent">
                     <p class="fs-1 fw-bold text-center mb-2"> AllSpice</p>
-                    <p class="fs-2 fw-bold text-center mb-2"> Cherish Your Family</p>
-                    <p class="fs-2 fw-bold text-center mb-2"> And Their Cooking</p>
+                    <p class="fs-3 fw-bold text-center mb-2"> Cherish Your Family</p>
+                    <p class="fs-3 fw-bold text-center mb-2"> And Their Cooking</p>
 
                 </div>
 
@@ -158,5 +158,15 @@ const account = computed(() => AppState.account)
 
 .text-shadow {
     text-shadow: 1px 1px black;
+}
+
+.no-round-start {
+    border-top-left-radius: 0%;
+    border-bottom-left-radius: 0%;
+}
+
+.no-round-end {
+    border-top-right-radius: 0%;
+    border-bottom-right-radius: 0%;
 }
 </style>

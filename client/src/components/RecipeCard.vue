@@ -13,7 +13,7 @@ const props = defineProps({ recipeProp: { type: Recipe, required: true } })
 
 
 
-const foundRecipe = AppState.favoritedRecipes.find(recipe => recipe.id == props.recipeProp.id)
+const foundRecipe = computed(() => AppState.favoritedRecipes.find(recipe => recipe.id == props.recipeProp.id))
 
 async function setActiveRecipe() {
     try {
@@ -37,6 +37,7 @@ async function getIngredientsForRecipe() {
 
 async function favoriteRecipe() {
     try {
+
         const recipeData = {
             recipeId: props.recipeProp.id,
             isFavorited: true
@@ -52,7 +53,7 @@ async function favoriteRecipe() {
 async function deleteFavorite() {
     try {
         logger.log(foundRecipe)
-        await favoritedRecipesService.deleteFavorite(foundRecipe.favoriteId)
+        await favoritedRecipesService.deleteFavorite(foundRecipe.value.favoriteId)
     }
     catch (error) {
         Pop.error("Could not unfavorite recipe");

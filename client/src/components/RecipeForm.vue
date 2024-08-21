@@ -86,9 +86,9 @@ function resetForm() {
             </div>
             <div class="col-12">
                 <div class="mb-3">
-                    <label for="imgUrl" class="form-label">Image File</label>
-                    <input required v-model="editableRecipeData.img" name="img" type="text" class="form-control"
-                        id="img" maxlength="1000">
+                    <label for="imgUrl" class="form-label">Image Url</label>
+                    <input required v-model="editableRecipeData.img" name="img" type="url" class="form-control" id="img"
+                        maxlength="1000">
                 </div>
             </div>
         </div>

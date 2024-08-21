@@ -38,6 +38,7 @@ class RecipesService {
         const recipeToDestroy = AppState.recipes.findIndex(recipe => recipe.id == recipeId)
         AppState.recipes.splice(recipeToDestroy, 1)
         AppState.favoritedRecipes.splice(recipeToDestroy, 1)
+        AppState.myRecipes.splice(recipeToDestroy, 1)
     }
     setActiveRecipe(recipeProp) {
         AppState.activeRecipeIngredients = null
