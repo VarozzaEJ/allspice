@@ -48,7 +48,9 @@ async function getAllRecipes() {
           <RouterLink :to="{ name: 'Home' }">
             <button class="btn no-round me-1 shadow btn-light">Home</button>
           </RouterLink>
-          <button class="btn no-round me-1 shadow btn-light">My Recipes</button>
+          <RouterLink :to="{ name: 'MyRecipes' }">
+            <button class="btn no-round me-1 shadow btn-light">My Recipes</button>
+          </RouterLink>
           <RouterLink :to="{ name: 'Favorites' }">
             <button class="btn no-round me-1 shadow btn-light">Favorites</button>
           </RouterLink>

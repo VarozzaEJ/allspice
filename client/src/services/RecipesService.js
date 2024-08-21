@@ -3,6 +3,7 @@ import { api } from "./AxiosService.js"
 import { Recipe } from "@/models/Recipe.js"
 import { AppState } from "@/AppState.js"
 import { Ingredient } from "@/models/Ingredient.js"
+import { FavoritedRecipe } from "@/models/FavoritedRecipe.js"
 
 
 class RecipesService {
@@ -47,14 +48,20 @@ class RecipesService {
     }
     async createRecipe(recipeData) {
         const response = await api.post('api/recipes', recipeData)
-        const newRecipe = new Recipe(response.data)
+        const newRecipe = new FavoritedRecipe(response.data)
         AppState.recipes.push(newRecipe)
+        AppState.myRecipes.push(newRecipe)
         return newRecipe
     }
     async getAllRecipes() {
         const response = await api.get('api/recipes')
         const recipes = response.data.map((recipePOJO) => new Recipe(recipePOJO))
         AppState.recipes = recipes
+    }
+
+    async getMyRecipes(creatorId) {
+        const response = await api.get(`api/account/${creatorId}/recipes`)
+        logger.log(response.data)
     }
 
 }

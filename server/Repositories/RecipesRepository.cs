@@ -63,6 +63,24 @@ public class RecipesRepository
         return recipes;
     }
 
+    internal List<Recipe> GetMyMadeRecipes(string creatorId)
+    {
+        string sql = @"
+        SELECT 
+        recipes.*,
+        accounts.*
+        FROM recipes 
+        JOIN accounts on accounts.id = recipes.creatorId
+        WHERE recipes.creatorId = @creatorId
+        ;";
+
+        List<Recipe> recipes = _db.Query<Recipe, Profile, Recipe>(sql, (recipe, profile) => {
+            recipe.Creator = profile;
+            return recipe;
+        }, new{creatorId}).ToList();
+        return recipes;
+    }
+
     internal Recipe GetRecipeById(int recipeId)
     {
         string sql = @"

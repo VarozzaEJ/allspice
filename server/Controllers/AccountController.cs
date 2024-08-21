@@ -10,11 +10,14 @@ public class AccountController : ControllerBase
 
   private readonly FavoritedRecipesService _favoritedRecipesService;
 
-    public AccountController(AccountService accountService, Auth0Provider auth0Provider, FavoritedRecipesService favoritedRecipesService)
+  private readonly RecipesService _recipesService;
+
+    public AccountController(AccountService accountService, Auth0Provider auth0Provider, FavoritedRecipesService favoritedRecipesService, RecipesService recipesService)
     {
         _accountService = accountService;
         _auth0Provider = auth0Provider;
         _favoritedRecipesService = favoritedRecipesService;
+        _recipesService = recipesService;
     }
 
     [HttpGet]
@@ -45,4 +48,18 @@ public class AccountController : ControllerBase
       return BadRequest(exception.Message);
     }
   }
+
+  [HttpGet("{creatorId}/recipes")]
+    public async Task<ActionResult<List<Recipe>>> GetMyMadeRecipes(string creatorId) {
+      try 
+      {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      List<Recipe> recipes = _recipesService.GetMyMadeRecipes(creatorId);
+      return Ok(recipes);
+      }
+      catch (Exception exception)
+      {
+        return BadRequest(exception.Message);
+      }
+    }
 }

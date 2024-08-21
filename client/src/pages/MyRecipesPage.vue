@@ -1,20 +1,27 @@
 <script setup>
 import { AppState } from '@/AppState.js';
 import RecipeCard from '@/components/RecipeCard.vue';
-import RecipeModal from '@/components/RecipeModal.vue';
-import { favoritedRecipesService } from '@/services/FavoritedRecipesService.js';
-import { logger } from '@/utils/Logger.js';
+import { recipesService } from '@/services/RecipesService.js';
 import Pop from '@/utils/Pop.js';
 import { computed, onMounted } from 'vue';
 
 
-const favoritedRecipes = computed(() => AppState.favoritedRecipes)
 
+const myRecipes = computed(() => AppState.myRecipes)
+const account = computed(() => AppState.account)
 
 onMounted(() => {
+    getMyRecipes()
 })
 
-
+async function getMyRecipes() {
+    try {
+        await recipesService.getMyRecipes(account.value?.id)
+    }
+    catch (error) {
+        Pop.error(error);
+    }
+}
 </script>
 
 
@@ -49,11 +56,12 @@ onMounted(() => {
             </div>
         </div>
     </header>
+
     <main class="mt-5">
         <div class="container-fluid">
             <div class="row">
 
-                <div v-for="recipe in favoritedRecipes" :key="recipe.id" class="col-xl-4 col-md-6 mt-3">
+                <div v-for="recipe in myRecipes" :key="recipe.id" class="col-xl-4 col-md-6 mt-3">
                     <RecipeCard :recipeProp='recipe' />
                 </div>
             </div>
