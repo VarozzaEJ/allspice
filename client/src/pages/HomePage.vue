@@ -18,13 +18,14 @@ async function logout() {
   AuthService.logout()
 }
 const categoryFilter = ref('all')
+
 const searchData = ref({
   searchData: ''
 })
 
 
 const recipes = computed(() => {
-  if (categoryFilter.value == 'all') {
+  if (categoryFilter.value == 'all' || categoryFilter.value == '') {
     return AppState.recipes
   }
   return AppState.recipes.filter(recipe => recipe.category == categoryFilter.value)
