@@ -60,8 +60,9 @@ class RecipesService {
     }
 
     async getMyRecipes(creatorId) {
-        const response = await api.get(`api/account/${creatorId}/recipes`)
-        logger.log(response.data)
+        const response = await api.get(`/account/${creatorId}/recipes`)
+        const myRecipes = response.data.map(recipePOJO => new Recipe(recipePOJO))
+        AppState.myRecipes = myRecipes
     }
 
 }

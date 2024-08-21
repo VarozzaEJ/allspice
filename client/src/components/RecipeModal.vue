@@ -103,7 +103,7 @@ async function deleteIngredient(ingredientId) {
                             <img class="" :src="activeRecipe.img" :alt="`${activeRecipe.title}'s image'`"
                                 :title="`${activeRecipe.title}'s image'`">
                         </div>
-                        <div class="col-md-6 bg-light">
+                        <div class="col-md-6 bg-light-subtle">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="d-flex">
@@ -138,7 +138,8 @@ async function deleteIngredient(ingredientId) {
                                         </div>
                                     </div>
 
-                                    <p class="fs-6 mb-1 text-dark-subtle fw-lighter">{{ activeRecipe.creator.name }}</p>
+                                    <p class="fs-6 mb-1 text-dark-subtle fw-lighter">By: {{ activeRecipe.creator.name }}
+                                    </p>
                                     <span class="badge text-bg-dark fw-light mt-2">{{ activeRecipe.category }} </span>
                                     <p class="mb-1 mt-4 fs-4 ">Ingredients</p>
                                     <div v-for="ingredient in activeRecipesIngredients"
@@ -314,9 +315,15 @@ img {
     border-top-right-radius: 1%;
     border-bottom-right-radius: 1%;
     max-height: 100%;
+    max-width: 100%;
     height: 600px;
-    width: 412px;
+    aspect-ratio: 1/1;
     object-fit: cover;
     object-position: center;
+}
+
+.img-bg {
+    background-position: center;
+
 }
 </style>

@@ -53,15 +53,15 @@ function resetForm() {
 
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
-                    <input v-model="editableRecipeData.title" type="text" class="form-control" id="title"
-                        placeholder="">
+                    <input required v-model="editableRecipeData.title" type="text" class="form-control" id="title"
+                        placeholder="" maxlength="275">
                 </div>
             </div>
             <div class="col-md-6">
 
                 <div class="mb-3">
                     <label for="category" class="form-label">Category</label>
-                    <select v-model="editableRecipeData.category" class="form-select"
+                    <select required v-model="editableRecipeData.category" class="form-select"
                         aria-label="Default select example">
                         <option value="breakfast">Breakfast</option>
                         <option value="lunch">Lunch</option>
@@ -87,8 +87,8 @@ function resetForm() {
             <div class="col-12">
                 <div class="mb-3">
                     <label for="imgUrl" class="form-label">Image File</label>
-                    <input v-model="editableRecipeData.img" name="img" type="text" class="form-control" id="img"
-                        maxlength="1000">
+                    <input required v-model="editableRecipeData.img" name="img" type="text" class="form-control"
+                        id="img" maxlength="1000">
                 </div>
             </div>
         </div>

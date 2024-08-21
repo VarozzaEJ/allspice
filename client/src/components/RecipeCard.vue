@@ -65,7 +65,7 @@ async function deleteFavorite() {
     <div class="shadow shadow-dark d-flex justify-content-between flex-column rounded container-fluid recipe-img">
         <div class="row d-flex justify-content-between">
             <div class="col-md-3 col-4">
-                <span class="badge text-bg-dark mt-2">{{ recipeProp.category }} </span>
+                <span class="badge text-capitalize text-bg-dark fs-6 mt-2">{{ recipeProp.category }} </span>
 
             </div>
             <div class="col-md-2 col-2">
@@ -78,7 +78,7 @@ async function deleteFavorite() {
         <div @click="setActiveRecipe()" data-bs-toggle="modal" data-bs-target="#recipeModal"
             class="row d-flex justify-content-center selectable">
             <div class="col-11 px-0 rounded bg-smokey mb-3 d-flex">
-                <p class="fs-5 ms-1 mb-0 text-light text-shadow">{{ recipeProp.title }}</p>
+                <p class="fs-5 text-capitalize ms-1 mb-0 text-light text-shadow">{{ recipeProp.title }}</p>
             </div>
         </div>
     </div>

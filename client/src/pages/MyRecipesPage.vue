@@ -1,22 +1,48 @@
 <script setup>
 import { AppState } from '@/AppState.js';
 import RecipeCard from '@/components/RecipeCard.vue';
+import { accountService } from '@/services/AccountService.js';
+import { AuthService } from '@/services/AuthService.js';
 import { recipesService } from '@/services/RecipesService.js';
+import { logger } from '@/utils/Logger.js';
 import Pop from '@/utils/Pop.js';
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref, watchEffect } from 'vue';
+const identity = computed(() => AppState.identity)
+async function login() {
+    AuthService.loginWithPopup()
+}
+async function logout() {
+    AuthService.logout()
+}
+const categoryFilter = ref('all')
+const searchData = ref({
+    searchData: ''
+})
+
+
+const myRecipes = computed(() => {
+    if (categoryFilter.value == 'all') {
+        return AppState.myRecipes
+    }
+    return AppState.myRecipes.filter(recipe => recipe.category == categoryFilter.value)
+})
 
 
 
-const myRecipes = computed(() => AppState.myRecipes)
+async function searchCategory() {
+    categoryFilter.value = searchData.value.searchData
+}
+
+
 const account = computed(() => AppState.account)
 
-onMounted(() => {
-    getMyRecipes()
-})
+onMounted(getMyRecipes)
 
 async function getMyRecipes() {
     try {
-        await recipesService.getMyRecipes(account.value?.id)
+        logger.log(account)
+        const accountId = account.value?.id
+        await recipesService.getMyRecipes(accountId)
     }
     catch (error) {
         Pop.error(error);
@@ -26,49 +52,91 @@ async function getMyRecipes() {
 
 
 <template>
-    <header>
-        <div class="container-fluid bg-hero">
-            <div class="row">
-                <Login />
-            </div>
-            <div class="row d-flex justify-content-center">
-                <div
-                    class="col-md-6 sahitya-font text-light text-shadow d-flex flex-column justify-content-center bg-transparent">
-                    <p class="fs-1 fw-bold text-center mb-2"> AllSpice</p>
-                    <p class="fs-2 fw-bold text-center mb-2"> Cherish Your Family</p>
-                    <p class="fs-2 fw-bold text-center mb-2"> And Their Cooking</p>
+    <div v-if="account">
+
+        <header>
+            <div class="container-fluid bg-hero shadow-lg">
+                <div class="row">
+                    <nav class="navbar bg-transparent">
+                        <div class="container-fluid d-flex justify-content-end">
+                            <form @submit="searchCategory()" class="d-flex me-5" role="search">
+                                <input v-model="searchData.searchData" class="form-control me-2" type="search"
+                                    placeholder="Search By Category" aria-label="Search">
+                                <button class="btn btn-success" type="submit">Search</button>
+                            </form>
+                            <button class="btn selectable text-success lighten-30 text-uppercase my-2 my-lg-0"
+                                @click="login" v-if="!identity">
+                                Login
+                            </button>
+                            <div v-else>
+                                <div class=" my-2 my-lg-0">
+                                    <div data-bs-toggle="dropdown" aria-expanded="false"
+                                        class="dropdown bg-transparent border-0 no-select">
+                                        <div class=" d-flex justify-content-end"
+                                            v-if="account?.picture || identity?.picture">
+                                            <img type="button" :src="account?.picture || identity?.picture"
+                                                alt="account photo" height="40" class="rounded" />
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-start p-0"
+                                        aria-labelledby="authDropdown">
+                                        <div class="list-group">
+                                            <router-link :to="{ name: 'Account' }">
+                                                <div class="list-group-item dropdown-item list-group-item-action">
+                                                    Manage Account
+                                                </div>
+                                            </router-link>
+                                            <div class="list-group-item dropdown-item list-group-item-action text-danger selectable"
+                                                @click="logout">
+                                                <i class="mdi mdi-logout"></i>
+                                                logout
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div
+                        class="col-md-6 sahitya-font text-light text-shadow d-flex flex-column justify-content-center bg-transparent">
+                        <p class="fs-1 fw-bold text-center mb-2"> AllSpice</p>
+                        <p class="fs-2 fw-bold text-center mb-2"> Cherish Your Family</p>
+                        <p class="fs-2 fw-bold text-center mb-2"> And Their Cooking</p>
+
+                    </div>
 
                 </div>
-
-            </div>
-            <div class="row d-flex justify-content-center">
-                <div class="col-md-6 d-flex justify-content-center">
-                    <RouterLink :to="{ name: 'Home' }">
-                        <button class="btn no-round me-1 shadow btn-light">Home</button>
-                    </RouterLink>
-                    <RouterLink :to="{ name: 'MyRecipes' }">
-                        <button class="btn no-round me-1 shadow btn-light">My Recipes</button>
-                    </RouterLink>
-                    <RouterLink :to="{ name: 'Favorites' }">
-                        <button class="btn no-round me-1 shadow btn-light">Favorites</button>
-                    </RouterLink>
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-6 sahitya-font  d-flex justify-content-center">
+                        <RouterLink :to="{ name: 'Home' }">
+                            <button class="btn no-round text-success me-1 shadow btn-light">Home</button>
+                        </RouterLink>
+                        <RouterLink :to="{ name: 'MyRecipes' }">
+                            <button class="btn no-round text-success me-1 shadow btn-light">My Recipes</button>
+                        </RouterLink>
+                        <RouterLink :to="{ name: 'Favorites' }">
+                            <button class="btn no-round text-success me-1 shadow btn-light">Favorites</button>
+                        </RouterLink>
+                    </div>
                 </div>
             </div>
-        </div>
-    </header>
+        </header>
 
-    <main class="mt-5">
-        <div class="container-fluid">
-            <div class="row">
+        <main class="mt-5">
+            <div class="container-fluid">
+                <div class="row">
 
-                <div v-for="recipe in myRecipes" :key="recipe.id" class="col-xl-4 col-md-6 mt-3">
-                    <RecipeCard :recipeProp='recipe' />
+                    <div v-for="recipe in myRecipes" :key="recipe.id" class="col-xl-4 col-md-6 mt-3 mb-3">
+                        <RecipeCard :recipeProp='recipe' />
+                    </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
+        <RecipeModal modalId="recipeModal" modalName="recipeModal" />
+    </div>
 
-    <RecipeModal modalId="recipeModal" modalName="recipeModal" />
 </template>
 
 
@@ -101,6 +169,6 @@ async function getMyRecipes() {
 }
 
 .text-shadow {
-    text-shadow: 2px 2px black;
+    text-shadow: 1px 1px black;
 }
 </style>

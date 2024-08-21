@@ -3,14 +3,32 @@ import { AppState } from '@/AppState.js';
 import Login from '@/components/Login.vue';
 import RecipeCard from '@/components/RecipeCard.vue';
 import RecipeModal from '@/components/RecipeModal.vue';
+import { AuthService } from '@/services/AuthService.js';
 import { recipesService } from '@/services/RecipesService.js';
 import Pop from '@/utils/Pop.js';
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
-
+const identity = computed(() => AppState.identity)
 const account = computed(() => AppState.account)
-const recipes = computed(() => AppState.recipes)
+async function login() {
+  AuthService.loginWithPopup()
+}
+async function logout() {
+  AuthService.logout()
+}
+const categoryFilter = ref('all')
+const searchData = ref({
+  searchData: ''
+})
+
+
+const recipes = computed(() => {
+  if (categoryFilter.value == 'all') {
+    return AppState.recipes
+  }
+  return AppState.recipes.filter(recipe => recipe.category == categoryFilter.value)
+})
 
 onMounted(() => {
   getAllRecipes()
@@ -25,13 +43,53 @@ async function getAllRecipes() {
   }
 }
 
+async function searchCategory() {
+  categoryFilter.value = searchData.value.searchData
+}
+
 </script>
 
 <template>
   <header>
-    <div class="container-fluid bg-hero">
+    <div class="container-fluid bg-hero shadow-lg">
       <div class="row">
-        <Login />
+        <nav class="navbar bg-transparent">
+          <div class="container-fluid d-flex justify-content-end">
+            <form @submit="searchCategory()" class="d-flex me-5" role="search">
+              <input v-model="searchData.searchData" class="form-control me-2" type="search"
+                placeholder="Search By Category" aria-label="Search">
+              <button class="btn btn-success" type="submit">Search</button>
+            </form>
+            <button class="btn selectable text-success lighten-30 text-uppercase my-2 my-lg-0" @click="login"
+              v-if="!identity">
+              Login
+            </button>
+            <div v-else>
+              <div class=" my-2 my-lg-0">
+                <div data-bs-toggle="dropdown" aria-expanded="false" class="dropdown bg-transparent border-0 no-select">
+                  <div class=" d-flex justify-content-end" v-if="account?.picture || identity?.picture">
+                    <img type="button" :src="account?.picture || identity?.picture" alt="account photo" height="40"
+                      class="rounded" />
+                  </div>
+                </div>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-start p-0" aria-labelledby="authDropdown">
+                  <div class="list-group">
+                    <router-link :to="{ name: 'Account' }">
+                      <div class="list-group-item dropdown-item list-group-item-action">
+                        Manage Account
+                      </div>
+                    </router-link>
+                    <div class="list-group-item dropdown-item list-group-item-action text-danger selectable"
+                      @click="logout">
+                      <i class="mdi mdi-logout"></i>
+                      logout
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
       </div>
       <div class="row d-flex justify-content-center">
         <div
@@ -43,16 +101,16 @@ async function getAllRecipes() {
         </div>
 
       </div>
-      <div class="row d-flex justify-content-center">
+      <div class="row sahitya-font d-flex justify-content-center">
         <div class="col-md-6 d-flex justify-content-center">
           <RouterLink :to="{ name: 'Home' }">
-            <button class="btn no-round me-1 shadow btn-light">Home</button>
+            <button class="btn no-round text-success me-1 shadow btn-light">Home</button>
           </RouterLink>
           <RouterLink :to="{ name: 'MyRecipes' }">
-            <button class="btn no-round me-1 shadow btn-light">My Recipes</button>
+            <button class="btn no-round text-success me-1 shadow btn-light">My Recipes</button>
           </RouterLink>
           <RouterLink :to="{ name: 'Favorites' }">
-            <button class="btn no-round me-1 shadow btn-light">Favorites</button>
+            <button class="btn no-round text-success me-1 shadow btn-light">Favorites</button>
           </RouterLink>
         </div>
       </div>
@@ -63,7 +121,7 @@ async function getAllRecipes() {
     <div class="container-fluid">
       <div class="row">
 
-        <div v-for="recipe in recipes" :key="recipe.id" class="col-xl-4 col-md-6 mt-3">
+        <div v-for="recipe in recipes" :key="recipe.id" class="col-xl-4 col-md-6 mt-3 mb-3">
           <RecipeCard :recipeProp='recipe' />
         </div>
       </div>
@@ -129,6 +187,6 @@ async function getAllRecipes() {
 }
 
 .text-shadow {
-  text-shadow: 2px 2px black;
+  text-shadow: 1px 1px black;
 }
 </style>
