@@ -90,6 +90,10 @@ async function deleteIngredient(ingredientId) {
         logger.error(error)
     }
 }
+
+function closeModal() {
+    Modal.getOrCreateInstance('#recipeModal').hide()
+}
 </script>
 
 
@@ -100,15 +104,15 @@ async function deleteIngredient(ingredientId) {
                 <div v-if="activeRecipe.editMode == false" class="container-fluid h-100">
                     <div class="row h-100">
                         <div class="col-md-6 px-0 h-100 ">
-                            <img class="" :src="activeRecipe.img" :alt="`${activeRecipe.title}'s image'`"
-                                :title="`${activeRecipe.title}'s image'`">
+                            <img @click="closeModal()" class="" :src="activeRecipe.img"
+                                :alt="`${activeRecipe.title}'s image'`" :title="`${activeRecipe.title}'s image'`">
                         </div>
                         <div class="col-md-6 bg-light-subtle">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="d-flex">
 
-                                        <p class="fs-4 mb-1 text-success">{{ activeRecipe.title }}</p>
+                                        <p class="fs-4 mb-1 text-capitalize text-success">{{ activeRecipe.title }}</p>
                                         <div v-if="account?.id == activeRecipe.creator.id"
                                             class="dropdown-center flex-grow-1 d-flex justify-content-end">
                                             <p class="mdi mdi-dots-horizontal fs-1" href="#" role="button"
@@ -164,8 +168,8 @@ async function deleteIngredient(ingredientId) {
                 <div v-if="activeRecipe.editMode == true" class="container-fluid h-100">
                     <div class="row h-100">
                         <div class="col-md-6 px-0 h-100 ">
-                            <img class="img-fluid " :src="activeRecipe.img" :alt="`${activeRecipe.title}'s image'`"
-                                :title="`${activeRecipe.title}'s image'`">
+                            <img @click="closeModal()" class="img-fluid " :src="activeRecipe.img"
+                                :alt="`${activeRecipe.title}'s image'`" :title="`${activeRecipe.title}'s image'`">
                         </div>
                         <div class="col-md-6 d-flex justify-content-between flex-column">
                             <div class="row">
@@ -179,7 +183,8 @@ async function deleteIngredient(ingredientId) {
                                                     <!-- <label for="title">Title</label>
                                                         <input v-model="editableRecipeData.title" type="text"
                                                             class="text-success form-control"> -->
-                                                    <p class="fs-4 text-success"> {{ activeRecipe.title }}</p>
+                                                    <p class="fs-4 text-success text-capitalize"> {{ activeRecipe.title
+                                                        }}</p>
                                                 </div>
 
                                             </div>
@@ -213,7 +218,7 @@ async function deleteIngredient(ingredientId) {
                                         </div>
                                     </div>
 
-                                    <p class="fs-6 mb-1 text-dark-subtle fw-lighter">{{ activeRecipe.creator.name }}
+                                    <p class="fs-6 mb-1 text-dark-subtle fw-lighter">By: {{ activeRecipe.creator.name }}
                                     </p>
                                     <span class="badge text-bg-dark fw-light mt-2">{{ activeRecipe.category }}
                                     </span>

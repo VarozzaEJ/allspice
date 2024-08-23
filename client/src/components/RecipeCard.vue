@@ -11,6 +11,8 @@ import { computed, onMounted } from 'vue';
 const props = defineProps({ recipeProp: { type: Recipe, required: true } })
 
 
+const account = computed(() => AppState.account)
+
 
 
 const foundRecipe = computed(() => AppState.favoritedRecipes.find(recipe => recipe.id == props.recipeProp.id))
@@ -69,7 +71,7 @@ async function deleteFavorite() {
                 <span class="badge text-capitalize text-bg-dark fs-6 mt-2">{{ recipeProp.category }} </span>
 
             </div>
-            <div class="col-md-2 col-2">
+            <div v-if="account" class="col-md-2 col-2">
                 <span v-if="!foundRecipe" @click="favoriteRecipe()" role="button"
                     class=" fs-4 mdi mdi-heart-outline text-danger"></span>
                 <span v-else-if="foundRecipe" @click="deleteFavorite()" role="button"

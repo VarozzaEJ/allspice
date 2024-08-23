@@ -130,7 +130,7 @@ async function searchCategory() {
   </main>
 
   <footer class="">
-    <button data-bs-toggle="modal" data-bs-target="#newRecipeForm"
+    <button v-if="account" data-bs-toggle="modal" data-bs-target="#newRecipeForm"
       class="fab btn shadow btn-success justify-content-end" title="New Recipe">
       <i class="mdi text-light mdi-plus fs-1"></i>
     </button>
